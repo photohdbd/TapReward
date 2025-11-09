@@ -32,7 +32,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setCurrentPage }) => {
                         Login
                     </button>
                 </div>
-                 <button onClick={() => setCurrentPage(Page.ADMIN_LOGIN)} className="mt-8 text-sm text-slate-400 hover:text-brand-primary transition">
+                 <button onClick={() => setCurrentPage(Page.ADMIN_LOGIN)} className="mt-8 text-xs text-slate-500 hover:text-slate-400 transition">
                     Admin Login
                 </button>
             </div>

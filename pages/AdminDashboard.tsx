@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Page, SetPage, User, PaymentRequest, WithdrawalRequest } from '../types';
 import { useAuth } from '../context/AuthContext';
@@ -10,11 +9,20 @@ const AdminDashboard: React.FC<{ setCurrentPage: SetPage }> = ({ setCurrentPage 
     const { logout } = useAuth();
     const [view, setView] = useState<AdminView>('dashboard');
 
+    // FIX: Replaced JSX.Element with React.ReactElement to resolve "Cannot find namespace 'JSX'" error.
+    const icons: { [key in AdminView]: React.ReactElement } = {
+        dashboard: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>,
+        users: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197M15 14a4 4 0 11-8 0 4 4 0 018 0z" /></svg>,
+        payments: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+        withdrawals: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>,
+    };
+
     const NavButton: React.FC<{ targetView: AdminView, label: string }> = ({ targetView, label }) => (
         <button
             onClick={() => setView(targetView)}
-            className={`w-full text-left px-4 py-2 rounded-lg transition ${view === targetView ? 'bg-brand-primary text-brand-dark font-bold' : 'hover:bg-slate-700'}`}
+            className={`w-full flex items-center px-4 py-2 rounded-lg transition ${view === targetView ? 'bg-brand-primary text-brand-dark font-bold' : 'hover:bg-slate-700'}`}
         >
+            {icons[targetView]}
             {label}
         </button>
     );
@@ -22,16 +30,27 @@ const AdminDashboard: React.FC<{ setCurrentPage: SetPage }> = ({ setCurrentPage 
     return (
         <div className="min-h-screen flex bg-brand-dark text-brand-light">
             <nav className="w-64 bg-slate-900 p-4 flex-shrink-0 flex flex-col">
-                <h1 className="text-2xl font-bold text-brand-primary mb-8">Admin Panel</h1>
+                <div className="flex items-center mb-8">
+                    <svg className="w-8 h-8 text-brand-primary mr-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" /></svg>
+                    <h1 className="text-2xl font-bold text-brand-light">Admin</h1>
+                </div>
+
                 <div className="space-y-2 flex-grow">
                     <NavButton targetView="dashboard" label="Dashboard" />
                     <NavButton targetView="users" label="Users List" />
                     <NavButton targetView="payments" label="Approve Accounts" />
                     <NavButton targetView="withdrawals" label="Withdraw Requests" />
                 </div>
-                 <button onClick={logout} className="w-full text-left px-4 py-2 rounded-lg transition hover:bg-slate-700">
-                    Logout
-                </button>
+                 <div className="space-y-2">
+                    <button onClick={logout} className="w-full flex items-center px-4 py-2 rounded-lg transition hover:bg-slate-700">
+                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
+                        Back to Site
+                    </button>
+                     <button onClick={logout} className="w-full flex items-center px-4 py-2 rounded-lg transition hover:bg-slate-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                        Logout
+                    </button>
+                 </div>
             </nav>
             <main className="flex-grow p-8 overflow-y-auto">
                 {view === 'dashboard' && <DashboardView />}

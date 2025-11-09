@@ -21,7 +21,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
 
         try {
             if (isAdminLogin) {
-                const success = await adminLogin(email, password);
+                const success = await adminLogin('', password);
                 if (!success) {
                     setError('Invalid admin credentials.');
                 }
@@ -39,7 +39,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
     };
     
     const pageTitle = isAdminLogin ? "Admin Login" : "Welcome Back!";
-    const pageSubtitle = isAdminLogin ? "Enter your credentials to access the admin panel." : "Login to continue your earning journey.";
+    const pageSubtitle = isAdminLogin ? "Enter the admin password to access the panel." : "Login to continue your earning journey.";
     
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-brand-dark">
@@ -50,18 +50,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                      {error && <p className="text-red-400 text-sm text-center bg-red-500/10 p-2 rounded-lg">{error}</p>}
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-brand-light focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                            placeholder="you@example.com"
-                            required
-                        />
-                    </div>
+                    {!isAdminLogin && (
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-brand-light focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                                placeholder="you@example.com"
+                                required
+                            />
+                        </div>
+                    )}
                     <div>
                         <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-1">Password</label>
                         <input
@@ -75,7 +77,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
                         />
                     </div>
                     <button type="submit" disabled={loading} className="w-full py-3 px-4 bg-brand-primary text-brand-dark font-bold rounded-lg hover:bg-brand-secondary disabled:opacity-50 transition">
-                        {loading ? 'Logging in...' : 'Login'}
+                        {loading ? 'Logging in...' : (isAdminLogin ? 'Login as Admin' : 'Login')}
                     </button>
                 </form>
                 <div className="mt-6 text-center text-sm">
