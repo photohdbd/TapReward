@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Page, SetPage } from '../types';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,9 +10,21 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [country, setCountry] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { signup } = useAuth();
+
+    // Mock function to simulate getting user's country from their IP
+    const getCountry = () => {
+        const countries = ['USA', 'Canada', 'UK', 'Australia', 'Germany', 'India', 'Brazil', 'Nigeria', 'Philippines'];
+        return countries[Math.floor(Math.random() * countries.length)];
+    };
+
+    useEffect(() => {
+        // Simulate fetching country when the component loads
+        setCountry(getCountry());
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,7 +35,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
         setError('');
         setLoading(true);
         try {
-            const user = await signup(name, email, password);
+            const user = await signup(name, email, password, country);
             if (!user) {
                 setError('An account with this email already exists.');
             }

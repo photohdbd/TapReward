@@ -12,6 +12,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
     const { login, adminLogin } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -80,6 +81,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
                         {loading ? 'Logging in...' : (isAdminLogin ? 'Login as Admin' : 'Login')}
                     </button>
                 </form>
+                <div className="mt-4 text-center text-sm">
+                    {!isAdminLogin && (
+                        <button onClick={() => setShowForgotPassword(true)} className="font-semibold text-slate-400 hover:text-brand-primary hover:underline">
+                            Forgot Password?
+                        </button>
+                    )}
+                </div>
                 <div className="mt-6 text-center text-sm">
                     {isAdminLogin ? (
                          <p className="text-slate-400">
@@ -96,6 +104,53 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage, isAdminLogin = fa
                         </p>
                     )}
                 </div>
+            </div>
+            {showForgotPassword && <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} />}
+        </div>
+    );
+};
+
+const ForgotPasswordModal: React.FC<{onClose: () => void}> = ({onClose}) => {
+    const [email, setEmail] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // In a real app, this would trigger an API call.
+        // For this mock app, we'll just show the success message.
+        setSubmitted(true);
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 animate-fade-in">
+            <div className="bg-slate-800 rounded-2xl shadow-2xl p-8 max-w-sm w-full relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h2 className="text-2xl font-bold text-brand-primary mb-4">Reset Password</h2>
+                {submitted ? (
+                    <div className="text-center">
+                        <p className="text-slate-300">If an account with that email exists, a password reset link has been sent.</p>
+                        <button onClick={onClose} className="mt-4 w-full py-2 px-4 bg-brand-primary text-brand-dark font-bold rounded-lg hover:bg-brand-secondary">
+                            Close
+                        </button>
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit}>
+                        <p className="text-slate-300 mb-4">Enter your email address and we'll send you a link to reset your password.</p>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-brand-light focus:outline-none focus:ring-2 focus:ring-brand-primary mb-4"
+                            placeholder="you@example.com"
+                            required
+                        />
+                        <button type="submit" className="w-full py-2 px-4 bg-brand-primary text-brand-dark font-bold rounded-lg hover:bg-brand-secondary">
+                            Send Reset Link
+                        </button>
+                    </form>
+                )}
             </div>
         </div>
     );

@@ -32,6 +32,7 @@ export interface User {
     lastDailyTask: string;
     spinsToday: number;
     lastSpinDate: string;
+    country?: string;
 }
 
 export interface WithdrawalRequest {

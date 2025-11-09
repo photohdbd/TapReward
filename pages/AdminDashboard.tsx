@@ -103,9 +103,9 @@ const UsersView = () => {
         <div>
             <h2 className="text-3xl font-bold mb-6">Users List</h2>
             <input type="text" placeholder="Search by name or email..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full max-w-md bg-slate-700 p-2 rounded-lg mb-4" />
-            <div className="bg-slate-800 rounded-xl overflow-hidden"><table className="w-full text-left"><thead className="bg-slate-900"><tr><th className="p-4">Name</th><th className="p-4">Email</th><th className="p-4">Balance</th><th className="p-4">Status</th></tr></thead><tbody>
+            <div className="bg-slate-800 rounded-xl overflow-hidden"><table className="w-full text-left"><thead className="bg-slate-900"><tr><th className="p-4">Name</th><th className="p-4">Email</th><th className="p-4">Balance</th><th className="p-4">Status</th><th className="p-4">Country</th></tr></thead><tbody>
                 {filteredUsers.map(user => (<tr key={user.id} className="border-b border-slate-700">
-                    <td className="p-4">{user.name}</td><td className="p-4">{user.email}</td><td className="p-4">${user.balance.toFixed(2)}</td><td className="p-4 capitalize">{user.status.replace('_', ' ')}</td>
+                    <td className="p-4">{user.name}</td><td className="p-4">{user.email}</td><td className="p-4">${user.balance.toFixed(2)}</td><td className="p-4 capitalize">{user.status.replace('_', ' ')}</td><td className="p-4">{user.country || 'N/A'}</td>
                 </tr>))}
             </tbody></table></div>
         </div>

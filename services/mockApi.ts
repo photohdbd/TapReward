@@ -31,7 +31,7 @@ initialize();
 
 // --- Auth ---
 
-export const signup = async (name: string, email: string, password: string): Promise<User | null> => {
+export const signup = async (name: string, email: string, password: string, country: string): Promise<User | null> => {
     const users = getFromStorage<User[]>(USERS_KEY) || [];
     if (users.some(u => u.email === email)) {
         return null; // User exists
@@ -51,6 +51,7 @@ export const signup = async (name: string, email: string, password: string): Pro
         lastDailyTask: '',
         spinsToday: 0,
         lastSpinDate: new Date().toISOString().split('T')[0],
+        country: country,
     };
     users.push(newUser);
     saveToStorage(USERS_KEY, users);

@@ -9,7 +9,7 @@ interface AuthContextType {
     loading: boolean;
     login: (email: string, password: string) => Promise<User | null>;
     adminLogin: (email: string, password: string) => Promise<boolean>;
-    signup: (name: string, email: string, password: string) => Promise<User | null>;
+    signup: (name: string, email: string, password: string, country: string) => Promise<User | null>;
     logout: () => void;
     updateUser: (updatedUser: Partial<User>) => void;
 }
@@ -56,8 +56,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return success;
     };
 
-    const signup = async (name: string, email: string, password: string): Promise<User | null> => {
-        const newUser = await api.signup(name, email, password);
+    const signup = async (name: string, email: string, password: string, country: string): Promise<User | null> => {
+        const newUser = await api.signup(name, email, password, country);
         if (newUser) {
             setUser(newUser);
         }
