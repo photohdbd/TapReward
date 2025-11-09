@@ -1,0 +1,5 @@
+{
+  "name": "TapReward",
+  "description": "A modern web application where users can earn daily rewards by completing tap tasks, daily check-ins, and participating in a referral system. Features a complete user and admin dashboard for managing earnings and approvals.",
+  "requestFramePermissions": []
+}
